@@ -10,14 +10,17 @@ public class Util {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "Root#1234";
 
-    public static Connection getConnect() throws SQLException {
+    public static Connection getConnect() {
         Connection connection = null;
 
-        while (connection == null || connection.isClosed()) {
+        try {
             Driver driver = new com.mysql.cj.jdbc.Driver();
             DriverManager.registerDriver(driver);
 
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return connection;
